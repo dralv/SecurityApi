@@ -28,5 +28,12 @@ namespace SecurityApi.Controllers
             await _userService.CadastrarUser(dto);
             return Ok("Usuário cadastrado com sucesso");
         }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginUsuarioDto dto)
+        {
+            var token = await _userService.Login(dto);
+            return Ok(token);
+        }
     }
 }

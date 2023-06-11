@@ -39,6 +39,7 @@ builder.Services
 
 #region Dependencies
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<TokenService>();
 #endregion
 var app = builder.Build();
 
