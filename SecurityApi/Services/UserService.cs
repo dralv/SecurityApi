@@ -19,10 +19,12 @@ namespace SecurityApi.Services
         public async Task CadastrarUser(CreateUserDto dto)
         {
             var user = _mapper.Map<User>(dto);
-            
 
+            var resultado = await _userManager.CreateAsync(user,dto.Password);
+
+            if (!resultado.Succeeded) throw new ApplicationException("Falha ao cadastra o usuário");
+            
         }
 
-        
     }
 }

@@ -8,7 +8,7 @@ namespace SecurityApi.Profiles
     {
         public UserProfile()
         {
-            CreateMap<User, CreateUserDto>();
+            CreateMap<User, CreateUserDto>().ReverseMap();
         }
     }
 }

@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using SecurityApi.Data;
 using SecurityApi.Models;
+using SecurityApi.Services;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration["ConnectionStrings:SecurityDb"];
@@ -10,7 +13,13 @@ var connectionString = builder.Configuration["ConnectionStrings:SecurityDb"];
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "UserAPI", Version = "v1" });
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
+});
 
 #region Configuração AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -28,6 +37,9 @@ builder.Services
     .AddDefaultTokenProviders();
 #endregion
 
+#region Dependencies
+builder.Services.AddScoped<UserService>();
+#endregion
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
